@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { useGastos } from '../hooks/useGastos.jsx'
+import { useToast } from '../hooks/useToast.jsx'
 import { itinerario, GASTO_GENERAL_ID } from '../data.js'
 import SegmentedToggle from './SegmentedToggle.jsx'
 
@@ -9,10 +10,19 @@ const OPCIONES_MONEDA = [
   { value: 'CHF', label: 'CHF' },
 ]
 
+// Sólo dígitos y un separador decimal: sin letras ni signos (números negativos).
+function limpiarImporte(v) {
+  v = v.replace(/[^\d.,]/g, '')
+  const i = v.search(/[.,]/)
+  if (i !== -1) v = v.slice(0, i + 1) + v.slice(i + 1).replace(/[.,]/g, '')
+  return v
+}
+
 // Formulario para añadir un gasto. Si se pasa `diaId` el día es fijo;
 // si se pasa `conSelectorDia` se muestra un desplegable con los 8 días.
 export default function GastoForm({ diaId, conSelectorDia = false, onAdded }) {
   const { addGasto } = useGastos()
+  const toast = useToast()
   const [concepto, setConcepto] = useState('')
   const [importe, setImporte] = useState('')
   const [moneda, setMoneda] = useState('EUR')
@@ -28,6 +38,7 @@ export default function GastoForm({ diaId, conSelectorDia = false, onAdded }) {
     setConcepto('')
     setImporte('')
     onAdded?.()
+    toast('Gasto añadido')
   }
 
   return (
@@ -56,7 +67,7 @@ export default function GastoForm({ diaId, conSelectorDia = false, onAdded }) {
         />
         <input
           value={importe}
-          onChange={(e) => setImporte(e.target.value)}
+          onChange={(e) => setImporte(limpiarImporte(e.target.value))}
           inputMode="decimal"
           placeholder="0,00"
           className="w-24 rounded-xl border border-forest-200 bg-white px-3 py-2.5 text-sm text-forest-800 outline-none placeholder:text-forest-300 focus:border-forest-500 focus:ring-2 focus:ring-forest-200"

@@ -1,10 +1,17 @@
 import { Trash2 } from 'lucide-react'
 import { useGastos } from '../hooks/useGastos.jsx'
+import { useToast } from '../hooks/useToast.jsx'
 import { formatImporte } from '../utils/money.js'
 
 // Lista de filas de gasto con botón para eliminar.
 export default function GastoLista({ items }) {
   const { deleteGasto } = useGastos()
+  const toast = useToast()
+
+  const eliminar = (id) => {
+    deleteGasto(id)
+    toast('Gasto eliminado')
+  }
 
   if (items.length === 0) {
     return (
@@ -26,7 +33,7 @@ export default function GastoLista({ items }) {
             {formatImporte(g.importe, g.moneda)}
           </span>
           <button
-            onClick={() => deleteGasto(g.id)}
+            onClick={() => eliminar(g.id)}
             aria-label="Eliminar gasto"
             className="rounded-lg p-1.5 text-forest-300 transition-colors hover:bg-red-50 hover:text-swiss-red"
           >
