@@ -16,6 +16,7 @@ import {
 import { itinerario } from '../data.js'
 import { useGastos } from '../hooks/useGastos.jsx'
 import { formatTotales } from '../utils/money.js'
+import Hero from './Hero.jsx'
 
 const iconos = {
   Plane,
@@ -36,22 +37,17 @@ export default function Itinerario() {
   return (
     <section>
       {/* Hero banner */}
-      <div className="relative -mx-4 -mt-6 mb-8 overflow-hidden md:-mx-8 md:-mt-10 md:rounded-b-3xl">
-        <img
-          src={`${import.meta.env.BASE_URL}switzerland.jpg`}
-          alt="Paisaje alpino suizo"
-          className="h-56 w-full object-cover md:h-72"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-forest-900/85 via-forest-900/25 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 p-5 md:p-8">
-          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-white/90">
+      <Hero
+        image={`${import.meta.env.BASE_URL}switzerland.jpg`}
+        alt="Paisaje alpino suizo"
+        className="mb-8"
+        kicker={
+          <>
             <span className="text-swiss-red">🇨🇭</span> 11 – 18 de agosto
-          </p>
-          <h1 className="mt-1.5 text-3xl font-semibold text-white drop-shadow-sm md:text-4xl">
-            Nuestro viaje a Suiza
-          </h1>
-        </div>
-      </div>
+          </>
+        }
+        title="Nuestro viaje a Suiza"
+      />
 
       <div className="relative">
         {/* Línea vertical del timeline */}
@@ -98,7 +94,7 @@ export default function Itinerario() {
                     </span>
 
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-wide text-swiss-red">
+                      <p className="text-[11px] kicker">
                         {dia.diaSemana} · {dia.dia} Ago
                       </p>
                       <h2 className="mt-0.5 truncate text-base font-semibold text-forest-800">
@@ -140,7 +136,7 @@ export default function Itinerario() {
                       </div>
                       <button
                         onClick={() => navigate(`/itinerario/dia/${dia.id}`)}
-                        className="mt-4 inline-flex items-center gap-2 rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-forest-800 active:scale-[0.98]"
+                        className="btn-primary mt-4 inline-flex items-center gap-2"
                       >
                         Ver detalle
                         <ArrowRight size={16} />

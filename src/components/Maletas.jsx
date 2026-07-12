@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Plus, Trash2, Check } from 'lucide-react'
 import { maletasIniciales, miembros } from '../data.js'
+import { useLocalStorage } from '../hooks/useLocalStorage.js'
 
 const STORAGE_KEY = 'suiza-maletas-v1'
 
@@ -18,28 +19,10 @@ function construirInicial() {
   return estado
 }
 
-function cargar() {
-  try {
-    const guardado = localStorage.getItem(STORAGE_KEY)
-    if (guardado) return JSON.parse(guardado)
-  } catch {
-    /* ignorar */
-  }
-  return construirInicial()
-}
-
 export default function Maletas() {
-  const [listas, setListas] = useState(cargar)
+  const [listas, setListas] = useLocalStorage(STORAGE_KEY, construirInicial)
   const [activa, setActiva] = useState('Común')
   const [nuevo, setNuevo] = useState('')
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(listas))
-    } catch {
-      /* ignorar */
-    }
-  }, [listas])
 
   const items = listas[activa] ?? []
   const hechos = items.filter((i) => i.hecho).length

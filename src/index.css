@@ -38,6 +38,17 @@
   }
 }
 
+/* Piezas de diseño reutilizables (el layout —flex, gap, márgenes— se pone
+   en cada uso; aquí sólo va el "aspecto" común). */
+@layer components {
+  .btn-primary {
+    @apply rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-forest-800 active:scale-[0.98];
+  }
+  .kicker {
+    @apply font-semibold uppercase tracking-wide text-swiss-red;
+  }
+}
+
 /* Subtle alpine texture on the app background */
 .alpine-bg {
   background-image:

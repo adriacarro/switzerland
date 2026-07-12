@@ -8,10 +8,10 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { itinerario } from '../src/data.js'
+import { SITE_URL as SITE } from '../site.config.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const distDir = join(__dirname, '..', 'dist')
-const SITE = 'https://adriacarro.github.io/switzerland'
 const HOME_IMG = `${SITE}/switzerland.jpg`
 const DESC =
   'Nuestro viaje familiar a Suiza, del 11 al 18 de agosto: itinerario, maletas, gastos, plan B y consejos.'
@@ -42,6 +42,10 @@ function pageFor({ path, title, desc, image }) {
   writeFileSync(join(outDir, 'index.html'), html)
 }
 
+// Home (normaliza el dist/index.html raíz desde SITE_URL, para que el dominio
+// tenga una única fuente en site.config.js)
+pageFor({ path: '/', title: 'Suiza en Familia · Agosto 2026', desc: DESC, image: HOME_IMG })
+
 // Secciones (usan la imagen de la home)
 const secciones = [
   { path: '/itinerario', title: 'Itinerario · Suiza en Familia' },
@@ -62,4 +66,4 @@ for (const d of itinerario) {
   })
 }
 
-console.log(`prerender-og: ${secciones.length + itinerario.length} páginas de ruta generadas`)
+console.log(`prerender-og: ${1 + secciones.length + itinerario.length} páginas de ruta generadas`)
