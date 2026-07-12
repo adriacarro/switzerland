@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   ChevronDown,
   ArrowRight,
@@ -13,7 +14,6 @@ import {
   Wallet,
 } from 'lucide-react'
 import { itinerario } from '../data.js'
-import DetalleDia from './DetalleDia.jsx'
 import { useGastos } from '../hooks/useGastos.jsx'
 import { formatTotales } from '../utils/money.js'
 
@@ -30,22 +30,8 @@ const iconos = {
 
 export default function Itinerario() {
   const [abierto, setAbierto] = useState(null)
-  const [detalleId, setDetalleId] = useState(null)
   const { totalDeDia } = useGastos()
-
-  // Vista de detalle de un día
-  if (detalleId) {
-    const idx = itinerario.findIndex((d) => d.id === detalleId)
-    return (
-      <DetalleDia
-        dia={itinerario[idx]}
-        anterior={idx > 0 ? itinerario[idx - 1] : null}
-        siguiente={itinerario[idx + 1] ?? null}
-        onBack={() => setDetalleId(null)}
-        onIr={(d) => setDetalleId(d.id)}
-      />
-    )
-  }
+  const navigate = useNavigate()
 
   return (
     <section>
@@ -153,7 +139,7 @@ export default function Itinerario() {
                         </ul>
                       </div>
                       <button
-                        onClick={() => setDetalleId(dia.id)}
+                        onClick={() => navigate(`/itinerario/dia/${dia.id}`)}
                         className="mt-4 inline-flex items-center gap-2 rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-forest-800 active:scale-[0.98]"
                       >
                         Ver detalle

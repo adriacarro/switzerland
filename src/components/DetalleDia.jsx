@@ -1,20 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Clock, Wallet, Plus } from 'lucide-react'
 import { RichText } from '../utils/format.jsx'
+import { itinerario } from '../data.js'
 import { useGastos } from '../hooks/useGastos.jsx'
-import { useNav } from '../hooks/useNav.jsx'
 import { formatTotales } from '../utils/money.js'
 import GastoModal from './GastoModal.jsx'
 
-export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
+export default function DetalleDia() {
+  const { diaId } = useParams()
+  const navigate = useNavigate()
   const { totalDeDia } = useGastos()
-  const { verGastosDeDia } = useNav()
   const [modal, setModal] = useState(false)
 
-  // Al abrir el detalle, subir al principio
-  useEffect(() => {
-    window.scrollTo({ top: 0 })
-  }, [dia.id])
+  const idx = itinerario.findIndex((d) => d.id === diaId)
+  const dia = itinerario[idx]
+
+  // Día inexistente en la URL → volver al itinerario
+  if (!dia) return <Navigate to="/itinerario" replace />
+
+  const anterior = idx > 0 ? itinerario[idx - 1] : null
+  const siguiente = itinerario[idx + 1] ?? null
+  const irADia = (d) => navigate(`/itinerario/dia/${d.id}`)
 
   const total = totalDeDia(dia.id)
   const hayGasto = total.eur > 0 || total.chf > 0
@@ -27,14 +34,14 @@ export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
     <section className="animate-fade-in">
       <div className="mb-4 flex items-center justify-between gap-3">
         <button
-          onClick={onBack}
+          onClick={() => navigate('/itinerario')}
           className="inline-flex items-center gap-2 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800"
         >
           <ArrowLeft size={18} />
           Itinerario
         </button>
         <button
-          onClick={() => verGastosDeDia(dia.id)}
+          onClick={() => navigate(`/gastos#gasto-dia-${dia.id}`)}
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800"
         >
           Ver gastos <ArrowRight size={16} />
@@ -129,7 +136,7 @@ export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
       <div className="mt-6 flex gap-3">
         {anterior ? (
           <button
-            onClick={() => onIr(anterior)}
+            onClick={() => irADia(anterior)}
             className="flex min-w-0 flex-1 flex-col items-start rounded-2xl border border-forest-100 bg-white p-4 text-left shadow-sm transition-colors hover:bg-forest-50"
           >
             <span className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-swiss-red">
@@ -145,7 +152,7 @@ export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
 
         {siguiente ? (
           <button
-            onClick={() => onIr(siguiente)}
+            onClick={() => irADia(siguiente)}
             className="flex min-w-0 flex-1 flex-col items-end rounded-2xl border border-forest-100 bg-white p-4 text-right shadow-sm transition-colors hover:bg-forest-50"
           >
             <span className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-swiss-red">
