@@ -28,7 +28,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="alpine-bg min-h-screen md:flex">
+    <div className="alpine-bg min-h-dvh md:flex">
       <ScrollToTop />
 
       {/* Sidebar — pantallas grandes */}

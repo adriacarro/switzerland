@@ -24,10 +24,13 @@
   html {
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
+    /* Evita el "rebote"/overscroll que deja ver el fondo bajo la barra inferior en móvil */
+    overscroll-behavior-y: none;
   }
   body {
     @apply bg-forest-50 text-forest-900 antialiased;
     font-family: var(--font-sans);
+    overscroll-behavior-y: none;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
