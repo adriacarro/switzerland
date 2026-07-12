@@ -1,13 +1,16 @@
 import { useState } from 'react'
-import { CalendarDays, Luggage, CloudRain, Lightbulb, Mountain } from 'lucide-react'
+import { CalendarDays, Luggage, CloudRain, Lightbulb, Wallet, Mountain } from 'lucide-react'
 import Itinerario from './components/Itinerario.jsx'
 import Maletas from './components/Maletas.jsx'
 import PlanB from './components/PlanB.jsx'
 import Consejos from './components/Consejos.jsx'
+import Gastos from './components/Gastos.jsx'
+import { GastosProvider } from './hooks/useGastos.jsx'
 
 const secciones = [
   { id: 'itinerario', label: 'Itinerario', icon: CalendarDays, Component: Itinerario },
   { id: 'maletas', label: 'Maletas', icon: Luggage, Component: Maletas },
+  { id: 'gastos', label: 'Gastos', icon: Wallet, Component: Gastos },
   { id: 'planb', label: 'Plan B', icon: CloudRain, Component: PlanB },
   { id: 'consejos', label: 'Consejos', icon: Lightbulb, Component: Consejos },
 ]
@@ -17,6 +20,7 @@ export default function App() {
   const Activa = secciones.find((s) => s.id === activa).Component
 
   return (
+    <GastosProvider>
     <div className="alpine-bg min-h-screen md:flex">
       {/* Sidebar — pantallas grandes */}
       <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-forest-100 bg-white/70 backdrop-blur">
@@ -67,7 +71,7 @@ export default function App() {
 
       {/* Bottom nav — móvil */}
       <nav className="md:hidden fixed bottom-0 inset-x-0 z-30 border-t border-forest-100 bg-white/90 backdrop-blur pb-[env(safe-area-inset-bottom)]">
-        <div className="grid grid-cols-4">
+        <div className="grid grid-cols-5">
           {secciones.map(({ id, label, icon: Icon }) => {
             const active = activa === id
             return (
@@ -92,5 +96,6 @@ export default function App() {
         </div>
       </nav>
     </div>
+    </GastosProvider>
   )
 }

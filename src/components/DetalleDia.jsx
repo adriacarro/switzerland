@@ -1,8 +1,13 @@
 import { useEffect } from 'react'
-import { ArrowLeft, ArrowRight, Clock } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Clock, Wallet } from 'lucide-react'
 import { RichText } from '../utils/format.jsx'
+import { useGastos } from '../hooks/useGastos.jsx'
+import { formatTotales } from '../utils/money.js'
+import GastoForm from './GastoForm.jsx'
+import GastoLista from './GastoLista.jsx'
 
 export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
+  const { gastosDeDia, totalDeDia } = useGastos()
   // Al abrir el detalle, subir al principio
   useEffect(() => {
     window.scrollTo({ top: 0 })
@@ -90,6 +95,22 @@ export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
             )
           })}
         </ul>
+      </div>
+
+      {/* Gastos del día */}
+      <div className="mt-6 rounded-2xl border border-forest-100 bg-white p-4 shadow-sm md:p-5">
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-forest-700">
+            <Wallet size={16} /> Gastos del día
+          </h3>
+          <span className="text-sm font-semibold text-forest-700">
+            {formatTotales(totalDeDia(dia.id))}
+          </span>
+        </div>
+        <div className="mb-3">
+          <GastoLista items={gastosDeDia(dia.id)} />
+        </div>
+        <GastoForm diaId={dia.id} />
       </div>
 
       {/* Navegación entre días */}
