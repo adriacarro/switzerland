@@ -71,16 +71,16 @@ export default function DetalleDia() {
         </div>
       </div>
 
-      {/* Acciones de gastos */}
-      <div className="mb-2 flex flex-col gap-3 sm:flex-row sm:items-center">
+      {/* Acciones de gastos — gasto a la izquierda, botón a la derecha */}
+      <div className="mb-2 flex items-center gap-3">
         {hayGasto && (
-          <span className="inline-flex w-fit items-center gap-1.5 whitespace-nowrap rounded-full bg-forest-100 px-3 py-1.5 text-sm font-medium text-forest-700">
+          <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-forest-100 px-3 py-1.5 text-sm font-medium text-forest-700">
             <Wallet size={14} className="shrink-0" /> {formatTotales(total)}
           </span>
         )}
         <button
           onClick={() => setModal(true)}
-          className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-forest-800 active:scale-[0.98] sm:ml-auto"
+          className="ml-auto inline-flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-forest-800 active:scale-[0.98]"
         >
           <Plus size={16} /> Añadir gasto
         </button>
