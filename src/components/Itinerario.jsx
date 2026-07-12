@@ -48,7 +48,7 @@ export default function Itinerario() {
       {/* Hero banner */}
       <div className="relative -mx-4 -mt-6 mb-8 overflow-hidden md:-mx-8 md:-mt-10 md:rounded-b-3xl">
         <img
-          src="/switzerland.jpg"
+          src={`${import.meta.env.BASE_URL}switzerland.jpg`}
           alt="Paisaje alpino suizo"
           className="h-56 w-full object-cover md:h-72"
         />
