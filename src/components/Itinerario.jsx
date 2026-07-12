@@ -76,7 +76,7 @@ export default function Itinerario() {
                 </div>
 
                 <div
-                  className={`overflow-hidden rounded-2xl border bg-white transition-shadow ${
+                  className={`overflow-hidden rounded-2xl border bg-white transition-all duration-200 hover:shadow-md ${
                     expandido
                       ? 'border-forest-200 shadow-md'
                       : 'border-forest-100 shadow-sm'

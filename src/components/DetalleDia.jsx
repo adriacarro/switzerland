@@ -31,7 +31,7 @@ export default function DetalleDia() {
   const bloques = dia.detalle.filter((b) => b.tipo !== 'intro')
 
   return (
-    <section className="animate-fade-in">
+    <section>
       {/* Cabecera del día — imagen a sangre, como en el listado */}
       <div className="relative -mx-4 -mt-6 mb-6 overflow-hidden md:-mx-8 md:-mt-10 md:rounded-b-3xl">
         <img

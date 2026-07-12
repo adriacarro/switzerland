@@ -27,6 +27,8 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const location = useLocation()
+
   return (
     <div className="alpine-bg min-h-dvh md:flex">
       <ScrollToTop />
@@ -73,16 +75,19 @@ export default function App() {
       {/* Contenido principal */}
       <div className="flex-1 md:pl-64">
         <main className="mx-auto max-w-3xl px-4 pb-28 pt-6 md:px-8 md:pb-12 md:pt-10">
-          <Routes>
-            <Route path="/" element={<Navigate to="/itinerario" replace />} />
-            <Route path="/itinerario" element={<Itinerario />} />
-            <Route path="/itinerario/dia/:diaId" element={<DetalleDia />} />
-            <Route path="/maletas" element={<Maletas />} />
-            <Route path="/gastos" element={<Gastos />} />
-            <Route path="/planb" element={<PlanB />} />
-            <Route path="/consejos" element={<Consejos />} />
-            <Route path="*" element={<Navigate to="/itinerario" replace />} />
-          </Routes>
+          {/* La key por pathname reinicia la animación de entrada en cada navegación */}
+          <div key={location.pathname} className="animate-page">
+            <Routes location={location}>
+              <Route path="/" element={<Navigate to="/itinerario" replace />} />
+              <Route path="/itinerario" element={<Itinerario />} />
+              <Route path="/itinerario/dia/:diaId" element={<DetalleDia />} />
+              <Route path="/maletas" element={<Maletas />} />
+              <Route path="/gastos" element={<Gastos />} />
+              <Route path="/planb" element={<PlanB />} />
+              <Route path="/consejos" element={<Consejos />} />
+              <Route path="*" element={<Navigate to="/itinerario" replace />} />
+            </Routes>
+          </div>
         </main>
       </div>
 
