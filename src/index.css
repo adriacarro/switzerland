@@ -1,0 +1,61 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-forest-50: #f0f7f1;
+  --color-forest-100: #dcefdf;
+  --color-forest-200: #bbdec2;
+  --color-forest-300: #8fc59b;
+  --color-forest-400: #5da66e;
+  --color-forest-500: #3d8a51;
+  --color-forest-600: #2c6d3e;
+  --color-forest-700: #245733;
+  --color-forest-800: #1f462b;
+  --color-forest-900: #1a3a25;
+
+  --color-swiss-red: #d8232a;
+  --color-swiss-red-dark: #b71c22;
+  --color-snow: #f8fafc;
+
+  --font-sans: 'Nunito Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-forest-50 text-forest-900 antialiased;
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Subtle alpine texture on the app background */
+.alpine-bg {
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(93, 166, 110, 0.08), transparent 40%),
+    radial-gradient(circle at 85% 0%, rgba(216, 35, 42, 0.05), transparent 35%);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out;
+}
+
+/* Custom checkbox tick animation */
+@keyframes pop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.animate-pop {
+  animation: pop 0.2s ease-out;
+}
