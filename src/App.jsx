@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { CalendarDays, Luggage, CloudRain, Lightbulb, Wallet, Mountain } from 'lucide-react'
 import Itinerario from './components/Itinerario.jsx'
 import Maletas from './components/Maletas.jsx'
@@ -6,6 +5,7 @@ import PlanB from './components/PlanB.jsx'
 import Consejos from './components/Consejos.jsx'
 import Gastos from './components/Gastos.jsx'
 import { GastosProvider } from './hooks/useGastos.jsx'
+import { NavProvider, useNav } from './hooks/useNav.jsx'
 
 const secciones = [
   { id: 'itinerario', label: 'Itinerario', icon: CalendarDays, Component: Itinerario },
@@ -16,11 +16,20 @@ const secciones = [
 ]
 
 export default function App() {
-  const [activa, setActiva] = useState('itinerario')
+  return (
+    <GastosProvider>
+      <NavProvider>
+        <AppShell />
+      </NavProvider>
+    </GastosProvider>
+  )
+}
+
+function AppShell() {
+  const { seccion: activa, setSeccion: setActiva } = useNav()
   const Activa = secciones.find((s) => s.id === activa).Component
 
   return (
-    <GastosProvider>
     <div className="alpine-bg min-h-screen md:flex">
       {/* Sidebar — pantallas grandes */}
       <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-forest-100 bg-white/70 backdrop-blur">
@@ -96,6 +105,5 @@ export default function App() {
         </div>
       </nav>
     </div>
-    </GastosProvider>
   )
 }

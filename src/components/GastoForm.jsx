@@ -1,11 +1,17 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { useGastos } from '../hooks/useGastos.jsx'
-import { itinerario } from '../data.js'
+import { itinerario, GASTO_GENERAL_ID } from '../data.js'
+import SegmentedToggle from './SegmentedToggle.jsx'
+
+const OPCIONES_MONEDA = [
+  { value: 'EUR', label: '€ EUR' },
+  { value: 'CHF', label: 'CHF' },
+]
 
 // Formulario para añadir un gasto. Si se pasa `diaId` el día es fijo;
 // si se pasa `conSelectorDia` se muestra un desplegable con los 8 días.
-export default function GastoForm({ diaId, conSelectorDia = false }) {
+export default function GastoForm({ diaId, conSelectorDia = false, onAdded }) {
   const { addGasto } = useGastos()
   const [concepto, setConcepto] = useState('')
   const [importe, setImporte] = useState('')
@@ -21,6 +27,7 @@ export default function GastoForm({ diaId, conSelectorDia = false }) {
     addGasto({ diaId: destino, concepto: c, importe: n, moneda })
     setConcepto('')
     setImporte('')
+    onAdded?.()
   }
 
   return (
@@ -31,6 +38,7 @@ export default function GastoForm({ diaId, conSelectorDia = false }) {
           onChange={(e) => setDia(e.target.value)}
           className="w-full rounded-xl border border-forest-200 bg-white px-4 py-2.5 text-sm text-forest-800 outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-200"
         >
+          <option value={GASTO_GENERAL_ID}>General · antes del viaje</option>
           {itinerario.map((d) => (
             <option key={d.id} value={d.id}>
               {d.dia} Ago · {d.titulo}
@@ -57,22 +65,7 @@ export default function GastoForm({ diaId, conSelectorDia = false }) {
 
       <div className="flex gap-2">
         {/* Toggle de divisa */}
-        <div className="flex overflow-hidden rounded-xl border border-forest-200">
-          {['EUR', 'CHF'].map((m) => (
-            <button
-              key={m}
-              type="button"
-              onClick={() => setMoneda(m)}
-              className={`px-4 py-2.5 text-sm font-medium transition-colors ${
-                moneda === m
-                  ? 'bg-forest-600 text-white'
-                  : 'bg-white text-forest-500 hover:bg-forest-50'
-              }`}
-            >
-              {m === 'EUR' ? '€ EUR' : 'CHF'}
-            </button>
-          ))}
-        </div>
+        <SegmentedToggle options={OPCIONES_MONEDA} value={moneda} onChange={setMoneda} />
         <button
           type="submit"
           className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-forest-800 active:scale-[0.98]"

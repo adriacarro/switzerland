@@ -4,6 +4,9 @@
 const fmtEUR = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' })
 const fmtCHF = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'CHF' })
 
+// Tipo de cambio aproximado (editable). 1 CHF ≈ 1,07 €.
+export const CHF_A_EUR = 1.07
+
 // Suma una lista de gastos agrupando por divisa → { eur, chf }
 export function sumaTotales(lista) {
   return lista.reduce(
@@ -34,4 +37,12 @@ export function formatTotales({ eur, chf }) {
 export function mediaPorDia({ eur, chf }, dias) {
   if (!dias) return { eur: 0, chf: 0 }
   return { eur: eur / dias, chf: chf / dias }
+}
+
+// Convierte un total { eur, chf } según el modo de visualización:
+// 'original' → sin cambios; 'EUR' → todo a euros; 'CHF' → todo a francos.
+export function totalEnModo(total, modo) {
+  if (modo === 'EUR') return { eur: total.eur + total.chf * CHF_A_EUR, chf: 0 }
+  if (modo === 'CHF') return { eur: 0, chf: total.chf + total.eur / CHF_A_EUR }
+  return total
 }
