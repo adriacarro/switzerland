@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { useGastos } from '../hooks/useGastos.jsx'
+import { useToast } from '../hooks/useToast.jsx'
 import { itinerario, GASTO_GENERAL_ID } from '../data.js'
 import SegmentedToggle from './SegmentedToggle.jsx'
 
@@ -13,6 +14,7 @@ const OPCIONES_MONEDA = [
 // si se pasa `conSelectorDia` se muestra un desplegable con los 8 días.
 export default function GastoForm({ diaId, conSelectorDia = false, onAdded }) {
   const { addGasto } = useGastos()
+  const toast = useToast()
   const [concepto, setConcepto] = useState('')
   const [importe, setImporte] = useState('')
   const [moneda, setMoneda] = useState('EUR')
@@ -28,6 +30,7 @@ export default function GastoForm({ diaId, conSelectorDia = false, onAdded }) {
     setConcepto('')
     setImporte('')
     onAdded?.()
+    toast('Gasto añadido')
   }
 
   return (
