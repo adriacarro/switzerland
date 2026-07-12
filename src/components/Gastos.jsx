@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Plus } from 'lucide-react'
 import { itinerario, GASTO_GENERAL_ID } from '../data.js'
 import { useGastos } from '../hooks/useGastos.jsx'
-import { useNav } from '../hooks/useNav.jsx'
 import {
   sumaTotales,
   formatTotales,
@@ -22,20 +22,20 @@ const OPCIONES_MODO = [
 
 export default function Gastos() {
   const { gastos, gastosDeDia, totalDeDia } = useGastos()
-  const { gastoTarget, setGastoTarget } = useNav()
+  const { hash } = useLocation()
   const [modo, setModo] = useState('original')
   const [modal, setModal] = useState(false)
   const [resaltado, setResaltado] = useState(null)
 
-  // Si llegamos desde el detalle de un día ("Ver gastos"), hacemos scroll
-  // hasta ese grupo y lo resaltamos brevemente.
+  // Si llegamos con un ancla (#gasto-dia-<id>, p. ej. desde "Ver gastos"),
+  // hacemos scroll hasta ese grupo y lo resaltamos brevemente.
   useEffect(() => {
-    if (!gastoTarget) return
-    const el = document.getElementById(`gasto-dia-${gastoTarget}`)
+    if (!hash) return
+    const elId = hash.slice(1) // 'gasto-dia-d11'
+    const el = document.getElementById(elId)
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    setResaltado(gastoTarget)
-    setGastoTarget(null)
-  }, [gastoTarget, setGastoTarget])
+    setResaltado(elId.replace('gasto-dia-', ''))
+  }, [hash])
 
   // El total incluye todo (también los gastos "General").
   const total = sumaTotales(gastos)
