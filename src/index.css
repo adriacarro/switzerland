@@ -59,3 +59,12 @@
 .animate-pop {
   animation: pop 0.2s ease-out;
 }
+
+/* Resalta brevemente el grupo de gastos al llegar desde "Ver gastos" */
+@keyframes resaltar {
+  0% { background-color: rgba(216, 35, 42, 0.10); }
+  100% { background-color: transparent; }
+}
+.animate-resaltar {
+  animation: resaltar 1.8s ease-out;
+}

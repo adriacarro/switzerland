@@ -343,6 +343,10 @@ export const maletasIniciales = {
 
 export const miembros = ['Greta', 'Rita', 'Raquel', 'Adrià', 'Común']
 
+// Identificador para gastos que no pertenecen a ningún día (p. ej. vuelos
+// pagados antes del viaje).
+export const GASTO_GENERAL_ID = 'general'
+
 export const planB = {
   lluvia: [
     {

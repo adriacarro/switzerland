@@ -1,12 +1,23 @@
-import { useEffect } from 'react'
-import { ArrowLeft, ArrowRight, Clock } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowLeft, ArrowRight, Clock, Wallet, Plus } from 'lucide-react'
 import { RichText } from '../utils/format.jsx'
+import { useGastos } from '../hooks/useGastos.jsx'
+import { useNav } from '../hooks/useNav.jsx'
+import { formatTotales } from '../utils/money.js'
+import GastoModal from './GastoModal.jsx'
 
 export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
+  const { totalDeDia } = useGastos()
+  const { verGastosDeDia } = useNav()
+  const [modal, setModal] = useState(false)
+
   // Al abrir el detalle, subir al principio
   useEffect(() => {
     window.scrollTo({ top: 0 })
   }, [dia.id])
+
+  const total = totalDeDia(dia.id)
+  const hayGasto = total.eur > 0 || total.chf > 0
 
   // Separamos la intro (si existe) del resto de bloques del timeline
   const intro = dia.detalle.find((b) => b.tipo === 'intro')
@@ -14,13 +25,21 @@ export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
 
   return (
     <section className="animate-fade-in">
-      <button
-        onClick={onBack}
-        className="mb-4 inline-flex items-center gap-2 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800"
-      >
-        <ArrowLeft size={18} />
-        Itinerario
-      </button>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800"
+        >
+          <ArrowLeft size={18} />
+          Itinerario
+        </button>
+        <button
+          onClick={() => verGastosDeDia(dia.id)}
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800"
+        >
+          Ver gastos <ArrowRight size={16} />
+        </button>
+      </div>
 
       {/* Cabecera del día */}
       <div className="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm md:p-6">
@@ -31,6 +50,20 @@ export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
           {dia.titulo}
         </h1>
         <p className="mt-2 text-forest-500">{dia.subtitulo}</p>
+
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+          {hayGasto && (
+            <span className="inline-flex w-fit items-center gap-1.5 whitespace-nowrap rounded-full bg-forest-100 px-3 py-1.5 text-sm font-medium text-forest-700">
+              <Wallet size={14} className="shrink-0" /> {formatTotales(total)}
+            </span>
+          )}
+          <button
+            onClick={() => setModal(true)}
+            className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-forest-800 active:scale-[0.98] sm:ml-auto"
+          >
+            <Plus size={16} /> Añadir gasto
+          </button>
+        </div>
       </div>
 
       {intro && (
@@ -126,6 +159,14 @@ export default function DetalleDia({ dia, anterior, siguiente, onBack, onIr }) {
           <div className="flex-1" />
         )}
       </div>
+
+      {modal && (
+        <GastoModal
+          titulo={`Nuevo gasto · ${dia.dia} Ago`}
+          diaId={dia.id}
+          onClose={() => setModal(false)}
+        />
+      )}
     </section>
   )
 }

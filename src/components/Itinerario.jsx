@@ -10,9 +10,12 @@ import {
   CableCar,
   Waves,
   Landmark,
+  Wallet,
 } from 'lucide-react'
 import { itinerario } from '../data.js'
 import DetalleDia from './DetalleDia.jsx'
+import { useGastos } from '../hooks/useGastos.jsx'
+import { formatTotales } from '../utils/money.js'
 
 const iconos = {
   Plane,
@@ -28,6 +31,7 @@ const iconos = {
 export default function Itinerario() {
   const [abierto, setAbierto] = useState(null)
   const [detalleId, setDetalleId] = useState(null)
+  const { totalDeDia } = useGastos()
 
   // Vista de detalle de un día
   if (detalleId) {
@@ -71,6 +75,8 @@ export default function Itinerario() {
           {itinerario.map((dia) => {
             const expandido = abierto === dia.id
             const Icono = iconos[dia.icono] ?? Mountain
+            const total = totalDeDia(dia.id)
+            const hayGasto = total.eur > 0 || total.chf > 0
             return (
               <li key={dia.id} className="relative pl-12 md:pl-16">
                 {/* Nodo con el número del día */}
@@ -116,6 +122,11 @@ export default function Itinerario() {
                         <p className="mt-0.5 truncate text-sm text-forest-500">
                           {dia.subtitulo}
                         </p>
+                      )}
+                      {hayGasto && (
+                        <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-forest-100 px-2 py-0.5 text-[11px] font-medium text-forest-700">
+                          <Wallet size={11} /> {formatTotales(total)}
+                        </span>
                       )}
                     </div>
 
