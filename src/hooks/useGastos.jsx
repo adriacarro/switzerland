@@ -1,30 +1,13 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 import { sumaTotales } from '../utils/money.js'
+import { useLocalStorage } from './useLocalStorage.js'
 
 const STORAGE_KEY = 'suiza-gastos-v1'
 
 const GastosContext = createContext(null)
 
-function cargar() {
-  try {
-    const guardado = localStorage.getItem(STORAGE_KEY)
-    if (guardado) return JSON.parse(guardado)
-  } catch {
-    /* ignorar */
-  }
-  return []
-}
-
 export function GastosProvider({ children }) {
-  const [gastos, setGastos] = useState(cargar)
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(gastos))
-    } catch {
-      /* ignorar */
-    }
-  }, [gastos])
+  const [gastos, setGastos] = useLocalStorage(STORAGE_KEY, [])
 
   const value = useMemo(() => {
     const addGasto = ({ diaId, concepto, importe, moneda }) =>

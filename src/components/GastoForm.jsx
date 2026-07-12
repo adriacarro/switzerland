@@ -68,7 +68,7 @@ export default function GastoForm({ diaId, conSelectorDia = false, onAdded }) {
         <SegmentedToggle options={OPCIONES_MONEDA} value={moneda} onChange={setMoneda} />
         <button
           type="submit"
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-forest-800 active:scale-[0.98]"
+          className="btn-primary flex flex-1 items-center justify-center gap-1.5"
         >
           <Plus size={18} /> Añadir gasto
         </button>

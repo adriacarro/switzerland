@@ -110,7 +110,7 @@ export default function Gastos() {
       {/* Añadir a cualquier día */}
       <button
         onClick={() => setModal(true)}
-        className="mb-6 inline-flex items-center gap-1.5 rounded-xl bg-forest-700 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-forest-800 active:scale-[0.98]"
+        className="btn-primary mb-6 inline-flex items-center gap-1.5"
       >
         <Plus size={18} /> Añadir gasto
       </button>
@@ -133,7 +133,7 @@ export default function Gastos() {
             >
               <div className="mb-2 flex items-baseline justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="text-[11px] font-semibold uppercase tracking-wide text-swiss-red">
+                  <p className="text-[11px] kicker">
                     {g.kicker}
                   </p>
                   <h2 className="truncate text-base font-semibold text-forest-800">
