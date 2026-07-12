@@ -48,17 +48,29 @@ export default function DetalleDia() {
         </button>
       </div>
 
-      {/* Cabecera del día */}
-      <div className="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm md:p-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-swiss-red">
-          {dia.diaSemana} · {dia.dia} Ago
-        </p>
-        <h1 className="mt-1.5 text-3xl font-semibold leading-tight text-forest-800 md:text-4xl">
-          {dia.titulo}
-        </h1>
-        <p className="mt-2 text-forest-500">{dia.subtitulo}</p>
+      {/* Cabecera del día — imagen representativa */}
+      <div className="relative overflow-hidden rounded-2xl shadow-sm">
+        <img
+          src={`${import.meta.env.BASE_URL}dias/dia-${dia.dia}.jpg`}
+          alt={`Foto representativa del ${dia.dia} de agosto: ${dia.titulo}`}
+          className="h-52 w-full object-cover md:h-64"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-forest-900/90 via-forest-900/30 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 p-5">
+          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-white/90">
+            <span className="text-swiss-red">🇨🇭</span> {dia.diaSemana} · {dia.dia} Ago
+          </p>
+          <h1 className="mt-1 text-2xl font-semibold leading-tight text-white drop-shadow-sm md:text-3xl">
+            {dia.titulo}
+          </h1>
+        </div>
+      </div>
 
-        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+      {/* Subtítulo + acciones */}
+      <div className="mt-4">
+        <p className="text-forest-500">{dia.subtitulo}</p>
+
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
           {hayGasto && (
             <span className="inline-flex w-fit items-center gap-1.5 whitespace-nowrap rounded-full bg-forest-100 px-3 py-1.5 text-sm font-medium text-forest-700">
               <Wallet size={14} className="shrink-0" /> {formatTotales(total)}
