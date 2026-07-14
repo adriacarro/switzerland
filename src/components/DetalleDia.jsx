@@ -32,7 +32,7 @@ export default function DetalleDia() {
   const bloques = dia.detalle.filter((b) => b.tipo !== 'intro')
 
   return (
-    <section className="animate-fade-in">
+    <section>
       {/* Cabecera del día — imagen a sangre, como en el listado */}
       <Hero
         image={`${import.meta.env.BASE_URL}dias/dia-${dia.dia}.jpg`}

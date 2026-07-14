@@ -91,3 +91,26 @@
 .animate-resaltar {
   animation: resaltar 1.8s ease-out;
 }
+
+/* Transición de entrada al cambiar de página/sección */
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-page {
+  /* 'backwards' evita el parpadeo inicial y NO deja un transform persistente
+     (que crearía un containing block y rompería los modales fixed hijos) */
+  animation: page-enter 0.32s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* Accesibilidad: respeta a quien prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
